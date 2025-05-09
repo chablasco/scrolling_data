@@ -89,6 +89,15 @@ function touchStarted() {
   }
   return false;
 }
+
+    function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+    generateCutouts();
+  }
+
+  function mousePressed() {
+    fullscreen(!fullscreen());
+  }
 </script>
 </body>
 </html>
