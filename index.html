@@ -23,7 +23,6 @@ let xPositions = [];
 let speeds = [];
 let lineHeight;
 let fontSize;
-let startX = 20;
 let customFont;
 
 function preload() {
@@ -34,7 +33,7 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   textFont(customFont);
-  textAlign(LEFT, CENTER);
+  textAlign(CENTER, CENTER);
   frameRate(60);
   initLayout();
 }
@@ -45,7 +44,7 @@ function draw() {
   for (let i = 0; i < sentences.length; i++) {
     let y = (i + 0.5) * lineHeight;
 
-    // Alternate background and text colors
+    // Alternating row colors
     if (i % 2 === 0) {
       fill(0);
       rect(0, y - lineHeight / 2, width, lineHeight);
@@ -56,11 +55,11 @@ function draw() {
       fill(0);
     }
 
-    text(sentences[i], xPositions[i] + startX, y);
+    text(sentences[i], xPositions[i], y);
     xPositions[i] -= speeds[i];
 
-    if (xPositions[i] + textWidth(sentences[i]) < -startX) {
-      xPositions[i] = width;
+    if (xPositions[i] + textWidth(sentences[i]) / 2 < 0) {
+      xPositions[i] = width + textWidth(sentences[i]) / 2 + 40;
     }
   }
 }
@@ -73,7 +72,7 @@ function initLayout() {
   xPositions = [];
   speeds = [];
   for (let i = 0; i < sentences.length; i++) {
-    xPositions.push(0);
+    xPositions.push(width / 2 + random(-200, 200)); // Start near center
     speeds.push(random(1.5, 3.5));
   }
 }
@@ -89,15 +88,6 @@ function touchStarted() {
   }
   return false;
 }
-
-    function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
-    generateCutouts();
-  }
-
-  function mousePressed() {
-    fullscreen(!fullscreen());
-  }
 </script>
 </body>
 </html>
