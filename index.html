@@ -28,6 +28,7 @@ let customFont;
 function preload() {
   customFont = loadFont('assets/Coconat-BoldExt.otf');
   sentences = loadStrings('assets/sentences.txt');
+  sentences = sentences.filter(line => line.trim() !== "");
 }
 
 function setup() {
