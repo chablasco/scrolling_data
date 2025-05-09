@@ -33,7 +33,7 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   textFont(customFont);
-  textAlign(CENTER, CENTER);
+  textAlign(LEFT, CENTER); // ← Justera för exakt position
   frameRate(60);
   initLayout();
 }
@@ -44,7 +44,7 @@ function draw() {
   for (let i = 0; i < sentences.length; i++) {
     let y = (i + 0.5) * lineHeight;
 
-    // Alternating row colors
+    // Varannan rad inverterar färger
     if (i % 2 === 0) {
       fill(0);
       rect(0, y - lineHeight / 2, width, lineHeight);
@@ -58,8 +58,9 @@ function draw() {
     text(sentences[i], xPositions[i], y);
     xPositions[i] -= speeds[i];
 
-    if (xPositions[i] + textWidth(sentences[i]) / 2 < 0) {
-      xPositions[i] = width + textWidth(sentences[i]) / 2 + 40;
+    // När hela texten har lämnat skärmen – börja direkt från höger
+    if (xPositions[i] + textWidth(sentences[i]) < 0) {
+      xPositions[i] = width;
     }
   }
 }
@@ -72,7 +73,7 @@ function initLayout() {
   xPositions = [];
   speeds = [];
   for (let i = 0; i < sentences.length; i++) {
-    xPositions.push(width / 2 + random(-200, 200)); // Start near center
+    xPositions.push(width); // ← Startar alla från högerkanten
     speeds.push(random(1.5, 3.5));
   }
 }
