@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CB Scrolling Sentences</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: white;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<script>
+let sentences = [];
+let xPositions = [];
+let speeds = [];
+let lineHeight;
+let fontSize;
+let startX = 20;
+let customFont;
+
+function preload() {
+  customFont = loadFont('assets/Berzulis-GAILA-Regular.ttf');
+  sentences = loadStrings('assets/sentences.txt');
+}
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  textFont(customFont);
+  textAlign(LEFT, CENTER);
+  frameRate(60);
+  initLayout();
+}
+
+function draw() {
+  background(255);
+
+  for (let i = 0; i < sentences.length; i++) {
+    let y = (i + 0.5) * lineHeight;
+
+    // Alternate background and text colors
+    if (i % 2 === 0) {
+      fill(0);
+      rect(0, y - lineHeight / 2, width, lineHeight);
+      fill(255);
+    } else {
+      fill(255);
+      rect(0, y - lineHeight / 2, width, lineHeight);
+      fill(0);
+    }
+
+    text(sentences[i], xPositions[i] + startX, y);
+    xPositions[i] -= speeds[i];
+
+    if (xPositions[i] + textWidth(sentences[i]) < -startX) {
+      xPositions[i] = width;
+    }
+  }
+}
+
+function initLayout() {
+  lineHeight = height / sentences.length;
+  fontSize = lineHeight * 0.8;
+  textSize(fontSize);
+
+  xPositions = [];
+  speeds = [];
+  for (let i = 0; i < sentences.length; i++) {
+    xPositions.push(0);
+    speeds.push(random(1.5, 3.5));
+  }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  initLayout();
+}
+
+function touchStarted() {
+  if (!fullscreen()) {
+    fullscreen(true);
+  }
+  return false;
+}
+</script>
+</body>
+</html>
